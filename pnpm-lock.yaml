@@ -56,6 +56,22 @@ importers:
         specifier: ^2.1.0
         version: 2.1.9(@types/node@18.19.130)
 
+  packages/worklog:
+    dependencies:
+      '@worktrace/core':
+        specifier: workspace:*
+        version: link:../core
+      '@worktrace/github':
+        specifier: workspace:*
+        version: link:../github
+    devDependencies:
+      typescript:
+        specifier: ^5.6.0
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.0
+        version: 2.1.9(@types/node@18.19.130)
+
 packages:
 
   '@anthropic-ai/sdk@0.30.1':
