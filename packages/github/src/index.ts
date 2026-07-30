@@ -8,3 +8,5 @@ export type { PollReactionsRepo } from "./pollReactions.js";
 export { commitWorklogFile } from "./commitWorklogFile.js";
 export type { CommitWorklogFileParams } from "./commitWorklogFile.js";
 export { createGithubClient } from "./createGithubClient.js";
+export { listReviewComments } from "./listReviewComments.js";
+export type { ReviewCommentThread, ListReviewCommentsParams } from "./listReviewComments.js";

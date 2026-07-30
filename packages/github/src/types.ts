@@ -15,6 +15,11 @@ export interface GithubClient {
       line: number;
       body: string;
     }): Promise<{ data: { id: number } }>;
+    listReviewComments?(params: {
+      owner: string;
+      repo: string;
+      pull_number: number;
+    }): Promise<{ data: Array<{ id: number; body: string; in_reply_to_id?: number }> }>;
   };
   reactions: {
     listForPullRequestReviewComment(params: {
