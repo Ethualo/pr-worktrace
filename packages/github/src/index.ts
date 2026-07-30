@@ -10,3 +10,5 @@ export type { CommitWorklogFileParams } from "./commitWorklogFile.js";
 export { createGithubClient } from "./createGithubClient.js";
 export { listReviewComments } from "./listReviewComments.js";
 export type { ReviewCommentThread, ListReviewCommentsParams } from "./listReviewComments.js";
+export { replyToReviewComment } from "./replyToReviewComment.js";
+export type { ReplyToReviewCommentParams } from "./replyToReviewComment.js";
