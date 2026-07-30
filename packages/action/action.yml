@@ -1,0 +1,25 @@
+name: "Worktrace Bot"
+description: "AI PR review with human-judgment work-trace logging"
+inputs:
+  github_token:
+    description: "GitHub token with repo scope"
+    required: true
+  llm_api_key:
+    description: "API key for the configured LLM provider"
+    required: true
+  repository:
+    description: "owner/repo"
+    required: true
+  pull_number:
+    description: "Pull request number"
+    required: true
+  commit_id:
+    description: "Head commit SHA of the PR"
+    required: true
+  config_path:
+    description: "Path to worktrace.config.json"
+    required: false
+    default: "worktrace.config.json"
+runs:
+  using: "node20"
+  main: "dist/main.js"
