@@ -45,6 +45,7 @@ export interface GithubClient {
       branch: string;
       sha?: string;
     }): Promise<{ data: unknown }>;
+    getContent?(params: { owner: string; repo: string; path: string }): Promise<{ data: { sha: string } }>;
   };
 }
 
