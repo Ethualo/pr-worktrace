@@ -1,12 +1,16 @@
 name: "Worktrace Bot"
 description: "AI PR review with human-judgment work-trace logging"
 inputs:
+  mode:
+    description: "review | poll"
+    required: false
+    default: "review"
   github_token:
     description: "GitHub token with repo scope"
     required: true
   llm_api_key:
-    description: "API key for the configured LLM provider"
-    required: true
+    description: "API key for the configured LLM provider (required for mode: review)"
+    required: false
   repository:
     description: "owner/repo"
     required: true
@@ -14,12 +18,22 @@ inputs:
     description: "Pull request number"
     required: true
   commit_id:
-    description: "Head commit SHA of the PR"
-    required: true
+    description: "Head commit SHA of the PR (required for mode: review; optional for mode: poll)"
+    required: false
   config_path:
-    description: "Path to worktrace.config.json"
+    description: "Path to worktrace.config.json (mode: review only)"
     required: false
     default: "worktrace.config.json"
+  branch:
+    description: "PR head branch name (required for mode: poll)"
+    required: false
+  date:
+    description: "Date string (YYYY-MM-DD) used in the worklog file name (required for mode: poll)"
+    required: false
+  pr_state:
+    description: "open | closed — whether the worklog file should be committed (mode: poll only)"
+    required: false
+    default: "open"
 runs:
   using: "node20"
   main: "dist/main.js"
