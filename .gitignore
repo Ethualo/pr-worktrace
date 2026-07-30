@@ -1,5 +1,8 @@
 node_modules/
 dist/
+!packages/action/dist/
 *.log
+*.tsbuildinfo
 .worklog/.cache
 .worktrees/
+.claude/
