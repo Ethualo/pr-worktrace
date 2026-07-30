@@ -2,7 +2,9 @@ import { describe, it, expect, vi } from "vitest";
 import { listReviewComments } from "./listReviewComments.js";
 import type { GithubClient } from "./types.js";
 
-function makeFakeClient(comments: Array<{ id: number; body: string; in_reply_to_id?: number }>): GithubClient {
+function makeFakeClient(
+  comments: Array<{ id: number; body: string; in_reply_to_id?: number; path?: string; line?: number }>
+): GithubClient {
   return {
     pulls: {
       get: vi.fn(),
@@ -15,16 +17,16 @@ function makeFakeClient(comments: Array<{ id: number; body: string; in_reply_to_
 }
 
 describe("listReviewComments", () => {
-  it("maps raw comments to threads, including inReplyToId when present", async () => {
+  it("maps raw comments to threads, including inReplyToId, path, and line when present", async () => {
     const client = makeFakeClient([
-      { id: 1, body: "top-level" },
+      { id: 1, body: "top-level", path: "src/x.ts", line: 12 },
       { id: 2, body: "a reply", in_reply_to_id: 1 },
     ]);
 
     const threads = await listReviewComments(client, { owner: "acme", repo: "widgets", pullNumber: 7 });
 
     expect(threads).toEqual([
-      { id: 1, body: "top-level" },
+      { id: 1, body: "top-level", path: "src/x.ts", line: 12 },
       { id: 2, body: "a reply", inReplyToId: 1 },
     ]);
   });

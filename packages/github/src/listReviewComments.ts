@@ -4,6 +4,8 @@ export interface ReviewCommentThread {
   id: number;
   body: string;
   inReplyToId?: number;
+  path?: string;
+  line?: number;
 }
 
 export interface ListReviewCommentsParams {
@@ -30,5 +32,7 @@ export async function listReviewComments(
     id: comment.id,
     body: comment.body,
     ...(comment.in_reply_to_id !== undefined ? { inReplyToId: comment.in_reply_to_id } : {}),
+    ...(comment.path !== undefined ? { path: comment.path } : {}),
+    ...(comment.line !== undefined && comment.line !== null ? { line: comment.line } : {}),
   }));
 }

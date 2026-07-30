@@ -19,7 +19,7 @@ export interface GithubClient {
       owner: string;
       repo: string;
       pull_number: number;
-    }): Promise<{ data: Array<{ id: number; body: string; in_reply_to_id?: number }> }>;
+    }): Promise<{ data: Array<{ id: number; body: string; in_reply_to_id?: number; path?: string; line?: number | null }> }>;
     createReplyForReviewComment?(params: {
       owner: string;
       repo: string;
