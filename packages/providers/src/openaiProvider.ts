@@ -8,6 +8,7 @@ export interface OpenAiProviderOptions {
   apiKey: string;
   model: string;
   baseUrl?: string;
+  extraBody?: Record<string, unknown>;
   fetchImpl?: typeof fetch;
 }
 
@@ -25,6 +26,7 @@ export function createOpenAiProvider(options: OpenAiProviderOptions): LLMProvide
           Authorization: `Bearer ${options.apiKey}`,
         },
         body: JSON.stringify({
+          ...options.extraBody,
           model: options.model,
           messages: [
             { role: "system", content: SYSTEM_PROMPT },

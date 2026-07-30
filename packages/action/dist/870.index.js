@@ -60,6 +60,7 @@ function createOpenAiProvider(options) {
                     Authorization: `Bearer ${options.apiKey}`,
                 },
                 body: JSON.stringify({
+                    ...options.extraBody,
                     model: options.model,
                     messages: [
                         { role: "system", content: openaiProvider_SYSTEM_PROMPT },
@@ -95,7 +96,12 @@ function createProvider(config) {
         return createClaudeProvider({ client, model: config.model });
     }
     if (config.provider === "openai") {
-        return createOpenAiProvider({ apiKey: config.apiKey, model: config.model, baseUrl: config.baseUrl });
+        return createOpenAiProvider({
+            apiKey: config.apiKey,
+            model: config.model,
+            baseUrl: config.baseUrl,
+            extraBody: config.extraBody,
+        });
     }
     throw new Error(`Unknown provider: ${config.provider}`);
 }

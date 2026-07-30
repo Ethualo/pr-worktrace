@@ -8,6 +8,7 @@ export interface ProviderConfig {
   apiKey: string;
   model: string;
   baseUrl?: string;
+  extraBody?: Record<string, unknown>;
 }
 
 export function createProvider(config: ProviderConfig): LLMProvider {
@@ -16,7 +17,12 @@ export function createProvider(config: ProviderConfig): LLMProvider {
     return createClaudeProvider({ client, model: config.model });
   }
   if (config.provider === "openai") {
-    return createOpenAiProvider({ apiKey: config.apiKey, model: config.model, baseUrl: config.baseUrl });
+    return createOpenAiProvider({
+      apiKey: config.apiKey,
+      model: config.model,
+      baseUrl: config.baseUrl,
+      extraBody: config.extraBody,
+    });
   }
   throw new Error(`Unknown provider: ${config.provider}`);
 }

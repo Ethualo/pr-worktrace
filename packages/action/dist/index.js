@@ -31748,7 +31748,13 @@ function loadConfig(params) {
     if (!params.apiKey) {
         throw new Error("Missing API key");
     }
-    return { provider: parsed.provider, apiKey: params.apiKey, model: parsed.model, baseUrl: parsed.baseUrl };
+    return {
+        provider: parsed.provider,
+        apiKey: params.apiKey,
+        model: parsed.model,
+        baseUrl: parsed.baseUrl,
+        extraBody: parsed.extraBody,
+    };
 }
 
 ;// CONCATENATED MODULE: ../github/dist/listReviewComments.js

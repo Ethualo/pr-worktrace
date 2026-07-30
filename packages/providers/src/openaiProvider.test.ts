@@ -62,6 +62,25 @@ describe("createOpenAiProvider", () => {
     expect(result.issues).toEqual([]);
   });
 
+  it("merges extraBody into the request payload", async () => {
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ choices: [{ message: { content: '{"issues":[]}' } }] }),
+    });
+
+    const provider = createOpenAiProvider({
+      apiKey: "key",
+      model: "nvidia/nemotron-3-super-120b-a12b",
+      extraBody: { chat_template_kwargs: { enable_thinking: false } },
+      fetchImpl: fetchMock as any,
+    });
+    await provider.review("diff text");
+
+    const requestBody = JSON.parse(fetchMock.mock.calls[0][1].body);
+    expect(requestBody.chat_template_kwargs).toEqual({ enable_thinking: false });
+    expect(requestBody.model).toBe("nvidia/nemotron-3-super-120b-a12b");
+  });
+
   it("throws when the HTTP response is not ok", async () => {
     const fetchMock = vi.fn().mockResolvedValue({ ok: false, status: 401, statusText: "Unauthorized" });
 
