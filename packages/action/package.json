@@ -1,0 +1,22 @@
+{
+  "name": "@worktrace/action",
+  "version": "0.0.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "vitest run",
+    "build": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@worktrace/core": "workspace:*",
+    "@worktrace/providers": "workspace:*",
+    "@worktrace/github": "workspace:*",
+    "@worktrace/worklog": "workspace:*",
+    "@actions/core": "^1.10.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
+  }
+}
