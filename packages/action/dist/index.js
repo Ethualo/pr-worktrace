@@ -31748,7 +31748,7 @@ function loadConfig(params) {
     if (!params.apiKey) {
         throw new Error("Missing API key");
     }
-    return { provider: parsed.provider, apiKey: params.apiKey, model: parsed.model };
+    return { provider: parsed.provider, apiKey: params.apiKey, model: parsed.model, baseUrl: parsed.baseUrl };
 }
 
 ;// CONCATENATED MODULE: ../github/dist/listReviewComments.js
@@ -32121,7 +32121,7 @@ async function runReviewMode() {
     const apiKey = core.getInput("llm_api_key", { required: true });
     const client = createGithubClient(githubToken);
     const config = loadConfig({ configJson: (0,external_node_fs_.readFileSync)(configPath, "utf-8"), apiKey });
-    const { createProvider } = await Promise.all(/* import() */[__nccwpck_require__.e(638), __nccwpck_require__.e(305)]).then(__nccwpck_require__.bind(__nccwpck_require__, 7305));
+    const { createProvider } = await Promise.all(/* import() */[__nccwpck_require__.e(638), __nccwpck_require__.e(870)]).then(__nccwpck_require__.bind(__nccwpck_require__, 5870));
     const provider = createProvider(config);
     try {
         const result = await runReview(client, provider, { owner, repo, pullNumber, commitId });

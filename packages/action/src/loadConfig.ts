@@ -6,7 +6,7 @@ export interface LoadConfigParams {
 }
 
 export function loadConfig(params: LoadConfigParams): ProviderConfig {
-  const parsed = JSON.parse(params.configJson) as { provider?: string; model?: string };
+  const parsed = JSON.parse(params.configJson) as { provider?: string; model?: string; baseUrl?: string };
 
   if (parsed.provider !== "claude" && parsed.provider !== "openai") {
     throw new Error(`Invalid provider in config: ${String(parsed.provider)}`);
@@ -18,5 +18,5 @@ export function loadConfig(params: LoadConfigParams): ProviderConfig {
     throw new Error("Missing API key");
   }
 
-  return { provider: parsed.provider, apiKey: params.apiKey, model: parsed.model };
+  return { provider: parsed.provider, apiKey: params.apiKey, model: parsed.model, baseUrl: parsed.baseUrl };
 }
