@@ -38,6 +38,7 @@ cd packages/<name> && pnpm test -- <pattern>   # single package/file
 - Strict TDD: RED → GREEN → commit, per function/file.
 - Design spec SSOT: `docs/superpowers/specs/2026-07-30-worktrace-bot-design.md` (Korean).
 - Implementation plans: `docs/superpowers/plans/*.md`, written and executed via superpowers skills (`writing-plans`, `subagent-driven-development`).
+- **Releases:** consumers pin `Ethualo/pr-worktrace@v1` (floating major tag). To ship a new version: publish a GitHub Release with a full semver tag (`v1.2.3`) — `.github/workflows/update-major-tag.yml` then force-moves `v1` to that commit automatically. Never move `v1` by hand; that workflow is the only path.
 
 ## Known gotchas
 
