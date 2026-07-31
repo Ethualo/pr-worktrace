@@ -44,9 +44,10 @@ cd packages/<name> && pnpm test -- <pattern>   # single package/file
 
 - After merging/pulling changes to a workspace package's source, run `pnpm -r build` before `pnpm -r test` — packages resolve each other via `node_modules → dist/` (gitignored), not source.
 - On Windows, `git worktree remove --force` can fail with "Directory not empty" due to file locks; fall back to `rm -rf <path>` (best-effort) + `git worktree prune`.
+- `fetchPrDiff.ts` pages through `listFiles` (3000-file ceiling) instead of requesting the diff media type on `GET /pulls/:number` — that endpoint 406s past ~300 files or ~20000 changed lines, and `runReviewMode` swallows the resulting error via `core.warning` (by design, so review failures never block the PR), so a too-large PR silently gets no review at all. Found live via feed-flow PR #21/#22 validation.
 
 ## Outstanding (see docs/superpowers/plans/2026-07-30-poll-mode.md "out of scope")
 
-- Generic workflow template lives at `examples/worktrace.yml` (review on push, poll on close + scheduled sweep for open PRs). Actually deploying it into the feed-flow repo (dropping it in as `.github/workflows/worktrace.yml`, wiring `worktrace.config.json` + secret there) — not started.
+- Deployed into feed-flow (`.github/workflows/worktrace.yml` from `examples/worktrace.yml`, `worktrace.config.json`, `WORKTRACE_LLM_API_KEY` secret) — done.
 - OpenAI provider native extras (beyond generic `extraBody` passthrough) — implemented provider is intentionally generic OpenAI-compatible (works with NIM etc. via `baseUrl`), no OpenAI-specific feature support yet.
 - Long-running production validation of the stateless architecture (large PRs, complex comment threads) as a persistent fixture repo, not just one-off E2E passes.
