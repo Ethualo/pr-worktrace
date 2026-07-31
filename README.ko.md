@@ -25,12 +25,12 @@ Action은 두 모드로 동작, `main.ts`에서 `mode` 입력값으로 분기:
 
 ## 프로바이더 추상화
 
-`packages/providers`는 `config.provider` 값으로 분기:
+`packages/providers`는 `config.provider` 값으로 분기한다. 지원하는 주 프로바이더는 둘:
 
 - `claude` — Anthropic Messages API
 - `openai` — 범용 OpenAI 호환 프로바이더 (`baseUrl` + `extraBody` 패스스루), OpenAI 형식 엔드포인트라면 프로바이더 전용 코드 없이 바로 동작
 
-NVIDIA NIM은 이 `openai` 프로바이더를 그대로 통과한다. 코드베이스 어디에도 NIM 전용 분기가 없다. NIM은 기본으로 추론(chain-of-thought)이 켜져 있어 응답 앞에 붙는데, 설정만으로 끈다:
+아래 E2E 검증은 대신 NVIDIA NIM으로 돌렸다. Anthropic/OpenAI 크레딧 제약을 테스트 중 우회하려던 것뿐, NIM이 타깃 프로바이더는 아니다. NIM이 OpenAI 호환 엔드포인트를 제공하는 덕에 `openai` 프로바이더를 그대로 통과할 뿐이고, 코드베이스 어디에도 NIM 전용 분기는 없다. NIM은 기본으로 추론(chain-of-thought)이 켜져 있어 응답 앞에 붙는데, 설정만으로 끈다:
 
 ```json
 {
