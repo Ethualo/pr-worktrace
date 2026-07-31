@@ -6,7 +6,7 @@ AI PR 리뷰 봇 + 작업 기록 로거, GitHub Action으로 패키징. 데이�
 
 ## 왜 만들었나
 
-대부분의 PR 리뷰 봇은 이미 무슨 말을 했는지 기억하려고 백엔드가 필요하다. pr-worktrace는 그렇지 않다. 상태를 자신이 올리는 결과물 안에 인코딩한다. 리뷰 댓글마다 숨긴 HTML 주석 마커를 달고, 봇 자신의 "사유를 남겨달라" 답글에도 같은 식으로 마커를 달아 둔다. 다음 실행 때는 그 마커들을 다시 파싱해 상태를 되살린다. 따로 운영할 인프라도, 낡아서 못 쓰게 될 인프라도 없다.
+대부분의 PR 리뷰 봇은 이미 무슨 말을 했는지 기억하려고 백엔드가 필요하다. pr-worktrace는 그렇지 않다. 상태를 자신이 올리는 결과물 안에 인코딩한다. 리뷰 댓글마다 숨긴 HTML 주석 마커를 달고 봇 자신의 "사유를 남겨달라" 답글에도 같은 식으로 마커를 달아 둔다. 다음 실행 때는 그 마커들을 다시 파싱해 상태를 되살린다. 따로 운영할 인프라도, 낡아서 못 쓰게 될 인프라도 없다.
 
 ## 아키텍처
 
@@ -25,12 +25,12 @@ Action은 두 모드로 동작, `main.ts`에서 `mode` 입력값으로 분기:
 
 ## 프로바이더 추상화
 
-`packages/providers`는 `config.provider` 값으로 분기하며, 값은 정확히 둘뿐이다:
+`packages/providers`는 `config.provider` 값으로 분기하며 값은 정확히 둘뿐이다:
 
 - `claude` — Anthropic Messages API
 - `openai` — 범용 OpenAI 호환 프로바이더 (`baseUrl` + `extraBody` 패스스루)
 
-"커스텀"을 위한 세 번째 `provider` 값은 없다. 대신 OpenAI 호환 백엔드라면(자체 호스팅이든 다른 벤더든) `provider: "openai"`에 `baseUrl`만 자기 것으로 넣으면 끝, 코드 수정 불필요. 아래 E2E 검증도 이 방식으로 NVIDIA NIM을 돌렸다: OpenAI 형식 API라 `openai` 프로바이더를 그대로 통과하고, NIM 전용 분기는 코드베이스에 없다. NIM은 기본으로 추론(chain-of-thought)이 켜져 있어 응답 앞에 붙는데, 설정만으로 끈다:
+"커스텀"을 위한 세 번째 `provider` 값은 없다. 대신 OpenAI 호환 백엔드라면(자체 호스팅이든 다른 벤더든) `provider: "openai"`에 `baseUrl`만 자기 것으로 넣으면 끝, 코드 수정 불필요. 아래 E2E 검증도 이 방식으로 NVIDIA NIM을 돌렸다: OpenAI 형식 API라 `openai` 프로바이더를 그대로 통과하고 NIM 전용 분기는 코드베이스에 없다. NIM은 기본으로 추론(chain-of-thought)이 켜져 있어 응답 앞에 붙는데, 설정만으로 끈다:
 
 ```json
 {
