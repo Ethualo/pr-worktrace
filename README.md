@@ -66,6 +66,11 @@ Validated in two independent, heterogeneous consumer repos (different LLM key, d
 
 Both test PRs and their scratch branches were closed and deleted after validation; nothing test-only was left in either repo.
 
+**Large-diff validation (post `fetchPrDiff` rewrite):** `fetchPrDiff.ts` originally requested the diff media type on `GET /pulls/:number`, which 406s past an undocumented ~300-file / ~20,000-line ceiling — and the caller swallows that error via `core.warning` (by design, so a broken review never blocks the PR), so any PR crossing either ceiling silently got zero review comments. Fixed by paginating through `pulls.listFiles` instead (higher ceiling, no line limit). Re-validated on:
+
+- feed-flow #22 — real 297-file / 35,000-line PR, 5 review comments posted correctly.
+- feed-flow #24 — synthetic 191-file / 23,493-line PR (matching the shape of the original failing commit) — workflow completed with no `core.warning` annotation, confirming the diff fetch itself no longer fails past the old line ceiling. Closed and deleted after validation.
+
 ## Commands
 
 ```bash
@@ -76,4 +81,4 @@ cd packages/<name> && pnpm test -- <pattern>   # single package/file
 
 ## Status
 
-Core review + poll modes, Claude provider, and generic OpenAI-compatible provider (incl. NVIDIA NIM) are implemented, tested, and E2E-verified. Not yet done: OpenAI provider is generic only (no OpenAI-specific extras beyond `extraBody`), and this repo hasn't been deployed as a persistent fixture in any production repo — the E2E runs above were deliberate, cleaned-up validation passes.
+Core review + poll modes, Claude provider, and generic OpenAI-compatible provider (incl. NVIDIA NIM) are implemented, tested, and E2E-verified. Deployed as a persistent fixture in feed-flow (real `worktrace.yml` on the default branch, not a one-off test PR). Not yet done: OpenAI provider is generic only (no OpenAI-specific extras beyond `extraBody`), and long-running production validation across more repos/PR shapes is still outstanding.
