@@ -25,12 +25,12 @@ Two Action modes, dispatched on the `mode` input in `main.ts`:
 
 ## Provider abstraction
 
-`packages/providers` dispatches on `config.provider`. The two supported, primary providers are:
+`packages/providers` dispatches on `config.provider`, which supports exactly two values:
 
 - `claude` — Anthropic Messages API
-- `openai` — generic OpenAI-compatible provider (`baseUrl` + `extraBody` passthrough), so any OpenAI-shaped endpoint works without provider-specific code
+- `openai` — generic OpenAI-compatible provider (`baseUrl` + `extraBody` passthrough)
 
-The E2E validation below ran on **NVIDIA NIM** instead. It exposes an OpenAI-shaped API, so it runs through the `openai` provider unmodified — no NIM-specific branch anywhere in the codebase. NIM's reasoning/chain-of-thought is on by default and gets prepended to responses; it's turned off purely through config:
+There's no third `provider` value for "custom" — instead, any OpenAI-compatible backend (self-hosted, another vendor, whatever) just uses `provider: "openai"` with its own `baseUrl`, no code changes needed. The E2E validation below used this to run on **NVIDIA NIM**: it exposes an OpenAI-shaped API, so it goes through the `openai` provider unmodified — no NIM-specific branch anywhere in the codebase. NIM's reasoning/chain-of-thought is on by default and gets prepended to responses; it's turned off purely through config:
 
 ```json
 {
