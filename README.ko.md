@@ -53,6 +53,8 @@ Action은 두 모드로 동작, `main.ts`에서 `mode` 입력값으로 분기:
 2. 저장소 루트에 `worktrace.config.json` — `provider`, `model`, `baseUrl`, `extraBody`.
 3. `WORKTRACE_LLM_API_KEY` 저장소 시크릿 (저장소별 개별 설정. 여러 저장소 공유하려면 GitHub 조직 단위 시크릿 사용.)
 
+전체 워크플로 템플릿(푸시 시 리뷰, PR close 시 poll + 열려있는 PR 리액션 수집용 주기 poll): [`examples/worktrace.yml`](examples/worktrace.yml).
+
 ## 검증 완료 내역
 
 독립된 두 저장소에서 종단 간(E2E) 검증을 마쳤다. 두 저장소는 LLM 키도, 기본 브랜치(`main` vs `master`)도 서로 다르다.

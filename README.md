@@ -53,6 +53,8 @@ There's no third `provider` value for "custom" — instead, any OpenAI-compatibl
 2. `worktrace.config.json` in the consumer repo root — `provider`, `model`, `baseUrl`, `extraBody`.
 3. `WORKTRACE_LLM_API_KEY` repo secret (per-repo; use GitHub Org-level secrets to share across repos).
 
+Full workflow template (review on push, poll on close + scheduled sweep for reactions on still-open PRs): [`examples/worktrace.yml`](examples/worktrace.yml).
+
 ## Verified end-to-end
 
 Validated in two independent, heterogeneous consumer repos (different LLM key, different default branch: `main` vs `master`):

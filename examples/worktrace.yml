@@ -1,0 +1,82 @@
+# Copy into the CONSUMER repo as .github/workflows/worktrace.yml
+# Requires: worktrace.config.json in repo root, WORKTRACE_LLM_API_KEY secret.
+name: Worktrace Bot
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+  schedule:
+    - cron: "*/15 * * * *" # poll open PRs for reactions between review runs
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  review:
+    if: github.event_name == 'pull_request' && github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: Ethualo/pr-worktrace@v1
+        with:
+          mode: review
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          llm_api_key: ${{ secrets.WORKTRACE_LLM_API_KEY }}
+          repository: ${{ github.repository }}
+          pull_number: ${{ github.event.pull_request.number }}
+          commit_id: ${{ github.event.pull_request.head.sha }}
+
+  poll-on-close:
+    if: github.event_name == 'pull_request' && github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Compute date
+        id: date
+        run: echo "value=$(date -u +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
+      - uses: Ethualo/pr-worktrace@v1
+        with:
+          mode: poll
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          pull_number: ${{ github.event.pull_request.number }}
+          branch: ${{ github.event.pull_request.head.ref }}
+          commit_id: ${{ github.event.pull_request.head.sha }}
+          date: ${{ steps.date.outputs.value }}
+          pr_state: closed
+
+  # Scheduled sweep: catches reactions left on still-open PRs between review runs
+  # (review mode only runs on push; nobody re-triggers a run just to record a reaction).
+  list-open-prs:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    outputs:
+      prs: ${{ steps.list.outputs.prs }}
+    steps:
+      - name: List open PRs
+        id: list
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "prs=$(gh pr list --repo ${{ github.repository }} --state open --json number,headRefName)" >> "$GITHUB_OUTPUT"
+
+  poll-open:
+    needs: list-open-prs
+    if: needs.list-open-prs.outputs.prs != '[]'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        pr: ${{ fromJson(needs.list-open-prs.outputs.prs) }}
+    steps:
+      - name: Compute date
+        id: date
+        run: echo "value=$(date -u +%Y-%m-%d)" >> "$GITHUB_OUTPUT"
+      - uses: Ethualo/pr-worktrace@v1
+        with:
+          mode: poll
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ github.repository }}
+          pull_number: ${{ matrix.pr.number }}
+          branch: ${{ matrix.pr.headRefName }}
+          date: ${{ steps.date.outputs.value }}
+          pr_state: open

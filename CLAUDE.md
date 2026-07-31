@@ -8,9 +8,11 @@ pnpm workspace monorepo, TypeScript strict/NodeNext, Vitest, Node 20.
 
 - `packages/core` — shared types (`ReviewIssue`, `Severity`, ...)
 - `packages/github` — GitHub API primitives, DI-testable (`GithubClient` passed as first arg to every function)
-- `packages/providers` — LLM provider abstraction (Claude implemented; OpenAI not yet)
+- `packages/providers` — LLM provider abstraction (Claude and OpenAI-compatible implemented; OpenAI-compatible covers NVIDIA NIM etc. via `baseUrl` override)
 - `packages/worklog` — `.worklog/*.md` file formatting and classification logic
 - `packages/action` — orchestration + GitHub Action entrypoint (`src/main.ts`, `action.yml`)
+
+> Note: package-level "implemented/not yet" status here can drift from code. If a status line looks stale, grep `packages/*/src` before trusting it.
 
 Every package has its own `package.json` (test/build scripts) and `tsconfig.json` (`composite: true` if referenced by another package).
 
@@ -44,6 +46,7 @@ cd packages/<name> && pnpm test -- <pattern>   # single package/file
 
 ## Outstanding (see docs/superpowers/plans/2026-07-30-poll-mode.md "out of scope")
 
-- Publishing/deploying this Action and writing the target-repo workflow YAML (`worktrace.config.json`, `.github/workflows/*.yml`) for the feed-flow deployment — not started.
+- Generic workflow template lives at `examples/worktrace.yml` (review on push, poll on close + scheduled sweep for open PRs). Actually deploying it into the feed-flow repo (dropping it in as `.github/workflows/worktrace.yml`, wiring `worktrace.config.json` + secret there) — not started.
 - Deduplicated `listReviewComments` call between `runPoll` and `requestReasonForRejections` — known, accepted inefficiency.
-- OpenAI provider implementation — unrelated, tracked separately.
+- OpenAI provider native extras (beyond generic `extraBody` passthrough) — implemented provider is intentionally generic OpenAI-compatible (works with NIM etc. via `baseUrl`), no OpenAI-specific feature support yet.
+- Long-running production validation of the stateless architecture (large PRs, complex comment threads) as a persistent fixture repo, not just one-off E2E passes.
