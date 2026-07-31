@@ -2,6 +2,7 @@
   "name": "pr-worktrace",
   "private": true,
   "version": "0.0.0",
+  "license": "MIT",
   "packageManager": "pnpm@11.18.0",
   "scripts": {
     "test": "pnpm -r test",
