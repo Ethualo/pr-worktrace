@@ -20,6 +20,13 @@ export interface GithubClient {
       repo: string;
       pull_number: number;
     }): Promise<{ data: Array<{ id: number; body: string; in_reply_to_id?: number; path?: string; line?: number | null }> }>;
+    listFiles?(params: {
+      owner: string;
+      repo: string;
+      pull_number: number;
+      page: number;
+      per_page: number;
+    }): Promise<{ data: Array<{ filename: string; status: string; patch?: string }> }>;
     createReplyForReviewComment?(params: {
       owner: string;
       repo: string;

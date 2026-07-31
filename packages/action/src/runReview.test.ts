@@ -6,8 +6,9 @@ import { runReview } from "./runReview.js";
 function makeFakeClient(diff: string, createReviewComment: ReturnType<typeof vi.fn>): GithubClient {
   return {
     pulls: {
-      get: vi.fn().mockResolvedValue({ data: diff }),
+      get: vi.fn(),
       createReviewComment,
+      listFiles: vi.fn().mockResolvedValue({ data: [{ filename: "x", status: "modified", patch: diff }] }),
     },
     reactions: { listForPullRequestReviewComment: vi.fn() },
     repos: { createOrUpdateFileContents: vi.fn() },
