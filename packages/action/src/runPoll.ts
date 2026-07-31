@@ -43,6 +43,7 @@ export async function runPoll(client: GithubClient, params: RunPollParams): Prom
     owner: params.owner,
     repo: params.repo,
     pullNumber: params.pullNumber,
+    threads,
     postedComments,
     reactions,
   });

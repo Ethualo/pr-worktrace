@@ -31851,12 +31851,7 @@ const REASON_REQUEST_MARKER = "<!-- worktrace-reason-request -->";
 const REASON_REQUEST_BODY = `${REASON_REQUEST_MARKER}\n이유 한 줄만 남겨주시겠어요? 판단 기록(work-trace)에 반영합니다.`;
 async function requestReasonForRejections(client, params) {
     const reactionsByCommentId = new Map(params.reactions.map((r) => [r.commentId, r]));
-    const threads = await listReviewComments(client, {
-        owner: params.owner,
-        repo: params.repo,
-        pullNumber: params.pullNumber,
-    });
-    const repliedToCommentIds = new Set(threads.filter((t) => t.inReplyToId !== undefined).map((t) => t.inReplyToId));
+    const repliedToCommentIds = new Set(params.threads.filter((t) => t.inReplyToId !== undefined).map((t) => t.inReplyToId));
     const askedIssueIds = [];
     for (const posted of params.postedComments) {
         const reaction = reactionsByCommentId.get(posted.commentId);
@@ -32029,6 +32024,7 @@ async function runPoll(client, params) {
         owner: params.owner,
         repo: params.repo,
         pullNumber: params.pullNumber,
+        threads,
         postedComments,
         reactions,
     });

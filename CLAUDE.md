@@ -47,6 +47,5 @@ cd packages/<name> && pnpm test -- <pattern>   # single package/file
 ## Outstanding (see docs/superpowers/plans/2026-07-30-poll-mode.md "out of scope")
 
 - Generic workflow template lives at `examples/worktrace.yml` (review on push, poll on close + scheduled sweep for open PRs). Actually deploying it into the feed-flow repo (dropping it in as `.github/workflows/worktrace.yml`, wiring `worktrace.config.json` + secret there) — not started.
-- Deduplicated `listReviewComments` call between `runPoll` and `requestReasonForRejections` — known, accepted inefficiency.
 - OpenAI provider native extras (beyond generic `extraBody` passthrough) — implemented provider is intentionally generic OpenAI-compatible (works with NIM etc. via `baseUrl`), no OpenAI-specific feature support yet.
 - Long-running production validation of the stateless architecture (large PRs, complex comment threads) as a persistent fixture repo, not just one-off E2E passes.

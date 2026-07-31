@@ -1,5 +1,5 @@
-import type { GithubClient, PostedComment, ReactionSummary } from "@pr-worktrace/github";
-import { listReviewComments, replyToReviewComment } from "@pr-worktrace/github";
+import type { GithubClient, PostedComment, ReactionSummary, ReviewCommentThread } from "@pr-worktrace/github";
+import { replyToReviewComment } from "@pr-worktrace/github";
 import { classifyDecision } from "@pr-worktrace/worklog";
 
 export const REASON_REQUEST_MARKER = "<!-- worktrace-reason-request -->";
@@ -9,6 +9,7 @@ export interface RequestReasonForRejectionsParams {
   owner: string;
   repo: string;
   pullNumber: number;
+  threads: ReviewCommentThread[];
   postedComments: PostedComment[];
   reactions: ReactionSummary[];
 }
@@ -18,13 +19,8 @@ export async function requestReasonForRejections(
   params: RequestReasonForRejectionsParams
 ): Promise<string[]> {
   const reactionsByCommentId = new Map(params.reactions.map((r) => [r.commentId, r]));
-  const threads = await listReviewComments(client, {
-    owner: params.owner,
-    repo: params.repo,
-    pullNumber: params.pullNumber,
-  });
   const repliedToCommentIds = new Set(
-    threads.filter((t) => t.inReplyToId !== undefined).map((t) => t.inReplyToId as number)
+    params.threads.filter((t) => t.inReplyToId !== undefined).map((t) => t.inReplyToId as number)
   );
 
   const askedIssueIds: string[] = [];
