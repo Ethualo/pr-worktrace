@@ -1,5 +1,7 @@
 # worktrace-bot
 
+[한국어](README.ko.md)
+
 AI PR-review bot + work-trace logger, packaged as a GitHub Action. No database — GitHub itself (PR comments, reactions, reply threads) is the sole state store, so every run is a stateless, memoryless process that reconstructs its state by reading GitHub back.
 
 ## Why this exists
