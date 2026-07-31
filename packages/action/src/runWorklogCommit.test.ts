@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import type { GithubClient } from "@worktrace/github";
+import type { GithubClient } from "@pr-worktrace/github";
 import { runWorklogCommit } from "./runWorklogCommit.js";
 
 function makeFakeClient(createOrUpdateFileContents: ReturnType<typeof vi.fn>): GithubClient {

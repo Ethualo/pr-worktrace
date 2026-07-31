@@ -1,4 +1,4 @@
-import type { Severity } from "@worktrace/core";
+import type { Severity } from "@pr-worktrace/core";
 
 export type Decision = "accepted" | "rejected" | "unclear";
 

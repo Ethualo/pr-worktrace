@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import type { GithubClient } from "@worktrace/github";
+import type { GithubClient } from "@pr-worktrace/github";
 import { requestReasonForRejections } from "./requestReasonForRejections.js";
 
 function makeFakeClient(

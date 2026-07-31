@@ -1,4 +1,4 @@
-import type { ReviewIssue } from "@worktrace/core";
+import type { ReviewIssue } from "@pr-worktrace/core";
 import type { GithubClient, PostedComment } from "./types.js";
 
 export interface PostReviewCommentsParams {

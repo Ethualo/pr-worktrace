@@ -1,4 +1,4 @@
-# worktrace-bot
+# pr-worktrace
 
 AI PR-review bot + work-trace logger, packaged as a GitHub Action. Portfolio piece; deployment target: feed-flow / claude-context-auto-handoff repos.
 

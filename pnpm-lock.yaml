@@ -23,16 +23,16 @@ importers:
       '@actions/core':
         specifier: ^1.10.0
         version: 1.11.1
-      '@worktrace/core':
+      '@pr-worktrace/core':
         specifier: workspace:*
         version: link:../core
-      '@worktrace/github':
+      '@pr-worktrace/github':
         specifier: workspace:*
         version: link:../github
-      '@worktrace/providers':
+      '@pr-worktrace/providers':
         specifier: workspace:*
         version: link:../providers
-      '@worktrace/worklog':
+      '@pr-worktrace/worklog':
         specifier: workspace:*
         version: link:../worklog
     devDependencies:
@@ -60,7 +60,7 @@ importers:
       '@octokit/rest':
         specifier: ^21.0.0
         version: 21.1.1
-      '@worktrace/core':
+      '@pr-worktrace/core':
         specifier: workspace:*
         version: link:../core
     devDependencies:
@@ -76,7 +76,7 @@ importers:
       '@anthropic-ai/sdk':
         specifier: ^0.30.0
         version: 0.30.1
-      '@worktrace/core':
+      '@pr-worktrace/core':
         specifier: workspace:*
         version: link:../core
     devDependencies:
@@ -89,10 +89,10 @@ importers:
 
   packages/worklog:
     dependencies:
-      '@worktrace/core':
+      '@pr-worktrace/core':
         specifier: workspace:*
         version: link:../core
-      '@worktrace/github':
+      '@pr-worktrace/github':
         specifier: workspace:*
         version: link:../github
     devDependencies:

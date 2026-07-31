@@ -1,5 +1,5 @@
-import type { ReviewIssue } from "@worktrace/core";
-import type { GithubClient, PostedComment, ReactionSummary } from "@worktrace/github";
+import type { ReviewIssue } from "@pr-worktrace/core";
+import type { GithubClient, PostedComment, ReactionSummary } from "@pr-worktrace/github";
 export interface RunWorklogCommitParams {
     owner: string;
     repo: string;

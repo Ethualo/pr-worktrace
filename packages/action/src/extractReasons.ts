@@ -1,4 +1,4 @@
-import type { PostedComment, ReviewCommentThread } from "@worktrace/github";
+import type { PostedComment, ReviewCommentThread } from "@pr-worktrace/github";
 import { REASON_REQUEST_MARKER } from "./requestReasonForRejections.js";
 
 export function extractReasons(

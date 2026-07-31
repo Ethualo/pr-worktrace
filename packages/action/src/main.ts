@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import * as core from "@actions/core";
-import { createGithubClient } from "@worktrace/github";
+import { createGithubClient } from "@pr-worktrace/github";
 import { loadConfig } from "./loadConfig.js";
 import { runPoll } from "./runPoll.js";
 import { runReview } from "./runReview.js";
@@ -20,7 +20,7 @@ async function runReviewMode(): Promise<void> {
 
   const client = createGithubClient(githubToken);
   const config = loadConfig({ configJson: readFileSync(configPath, "utf-8"), apiKey });
-  const { createProvider } = await import("@worktrace/providers");
+  const { createProvider } = await import("@pr-worktrace/providers");
   const provider = createProvider(config);
 
   try {
@@ -31,7 +31,7 @@ async function runReviewMode(): Promise<void> {
       core.setFailed(`GitHub API auth/permission error: ${error instanceof Error ? error.message : String(error)}`);
       return;
     }
-    core.warning(`worktrace-bot review step failed, continuing without blocking the PR: ${error instanceof Error ? error.message : String(error)}`);
+    core.warning(`pr-worktrace review step failed, continuing without blocking the PR: ${error instanceof Error ? error.message : String(error)}`);
   }
 }
 
@@ -57,7 +57,7 @@ async function runPollMode(): Promise<void> {
       core.setFailed(`GitHub API auth/permission error: ${error instanceof Error ? error.message : String(error)}`);
       return;
     }
-    core.warning(`worktrace-bot poll step failed, continuing without blocking the PR: ${error instanceof Error ? error.message : String(error)}`);
+    core.warning(`pr-worktrace poll step failed, continuing without blocking the PR: ${error instanceof Error ? error.message : String(error)}`);
   }
 }
 

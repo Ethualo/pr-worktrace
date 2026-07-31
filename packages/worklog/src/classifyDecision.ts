@@ -1,4 +1,4 @@
-import type { ReactionSummary } from "@worktrace/github";
+import type { ReactionSummary } from "@pr-worktrace/github";
 import type { Decision } from "./types.js";
 
 export function classifyDecision(reactions: ReactionSummary): Decision {

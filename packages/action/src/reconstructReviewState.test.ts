@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import type { ReviewCommentThread } from "@worktrace/github";
+import type { ReviewCommentThread } from "@pr-worktrace/github";
 import { reconstructReviewState } from "./reconstructReviewState.js";
 
 describe("reconstructReviewState", () => {

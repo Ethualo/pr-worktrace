@@ -1,4 +1,4 @@
-import type { LLMProvider, ReviewResult } from "@worktrace/core";
+import type { LLMProvider, ReviewResult } from "@pr-worktrace/core";
 
 const SYSTEM_PROMPT = `You review code diffs. Respond ONLY with JSON matching:
 {"issues": [{"id": string, "severity": "low"|"medium"|"high"|"critical", "file": string, "line": number, "summary": string, "suggestion": string}]}

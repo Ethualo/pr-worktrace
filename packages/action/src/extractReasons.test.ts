@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import type { PostedComment, ReviewCommentThread } from "@worktrace/github";
+import type { PostedComment, ReviewCommentThread } from "@pr-worktrace/github";
 import { extractReasons } from "./extractReasons.js";
 import { REASON_REQUEST_MARKER } from "./requestReasonForRejections.js";
 

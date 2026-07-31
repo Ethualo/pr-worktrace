@@ -1,5 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk";
-import type { LLMProvider } from "@worktrace/core";
+import type { LLMProvider } from "@pr-worktrace/core";
 import { createClaudeProvider } from "./claudeProvider.js";
 import { createOpenAiProvider } from "./openaiProvider.js";
 

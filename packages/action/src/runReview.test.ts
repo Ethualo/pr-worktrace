@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from "vitest";
-import type { GithubClient } from "@worktrace/github";
-import type { LLMProvider, ReviewResult } from "@worktrace/core";
+import type { GithubClient } from "@pr-worktrace/github";
+import type { LLMProvider, ReviewResult } from "@pr-worktrace/core";
 import { runReview } from "./runReview.js";
 
 function makeFakeClient(diff: string, createReviewComment: ReturnType<typeof vi.fn>): GithubClient {

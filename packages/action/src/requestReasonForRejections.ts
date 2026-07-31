@@ -1,6 +1,6 @@
-import type { GithubClient, PostedComment, ReactionSummary } from "@worktrace/github";
-import { listReviewComments, replyToReviewComment } from "@worktrace/github";
-import { classifyDecision } from "@worktrace/worklog";
+import type { GithubClient, PostedComment, ReactionSummary } from "@pr-worktrace/github";
+import { listReviewComments, replyToReviewComment } from "@pr-worktrace/github";
+import { classifyDecision } from "@pr-worktrace/worklog";
 
 export const REASON_REQUEST_MARKER = "<!-- worktrace-reason-request -->";
 const REASON_REQUEST_BODY = `${REASON_REQUEST_MARKER}\n이유 한 줄만 남겨주시겠어요? 판단 기록(work-trace)에 반영합니다.`;

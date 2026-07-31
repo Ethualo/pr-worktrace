@@ -1,4 +1,4 @@
-import type { GithubClient } from "@worktrace/github";
+import type { GithubClient } from "@pr-worktrace/github";
 export interface RunPollParams {
     owner: string;
     repo: string;

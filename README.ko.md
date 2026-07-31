@@ -1,4 +1,4 @@
-# worktrace-bot
+# pr-worktrace
 
 [English](README.md)
 
@@ -6,7 +6,7 @@ AI PR 리뷰 봇 + 작업 기록 로거, GitHub Action으로 패키징. 데이�
 
 ## 왜 만들었나
 
-대부분의 PR 리뷰 봇은 이미 무슨 말을 했는지 기억하려고 백엔드가 필요하다. worktrace-bot은 그렇지 않다. 상태를 자신이 올리는 결과물 안에 인코딩한다. 리뷰 댓글마다 숨긴 HTML 주석 마커를 달고, 봇 자신의 "사유를 남겨달라" 답글에도 같은 식으로 마커를 달아 둔다. 다음 실행 때는 그 마커들을 다시 파싱해 상태를 되살린다. 따로 운영할 인프라도, 낡아서 못 쓰게 될 인프라도 없다.
+대부분의 PR 리뷰 봇은 이미 무슨 말을 했는지 기억하려고 백엔드가 필요하다. pr-worktrace는 그렇지 않다. 상태를 자신이 올리는 결과물 안에 인코딩한다. 리뷰 댓글마다 숨긴 HTML 주석 마커를 달고, 봇 자신의 "사유를 남겨달라" 답글에도 같은 식으로 마커를 달아 둔다. 다음 실행 때는 그 마커들을 다시 파싱해 상태를 되살린다. 따로 운영할 인프라도, 낡아서 못 쓰게 될 인프라도 없다.
 
 ## 아키텍처
 
@@ -30,12 +30,12 @@ Action은 두 모드로 동작, `main.ts`에서 `mode` 입력값으로 분기:
 - `claude` — Anthropic Messages API
 - `openai` — 범용 OpenAI 호환 프로바이더 (`baseUrl` + `extraBody` 패스스루), OpenAI 형식 엔드포인트라면 프로바이더 전용 코드 없이 바로 동작
 
-아래 E2E 검증은 대신 NVIDIA NIM으로 돌렸다. Anthropic/OpenAI 크레딧 제약을 테스트 중 우회하려던 것뿐, NIM이 타깃 프로바이더는 아니다. NIM이 OpenAI 호환 엔드포인트를 제공하는 덕에 `openai` 프로바이더를 그대로 통과할 뿐이고, 코드베이스 어디에도 NIM 전용 분기는 없다. NIM은 기본으로 추론(chain-of-thought)이 켜져 있어 응답 앞에 붙는데, 설정만으로 끈다:
+아래 E2E 검증은 대신 NVIDIA NIM으로 돌렸다. OpenAI 형식 API라 `openai` 프로바이더를 그대로 통과하고, NIM 전용 분기는 코드베이스에 없다. NIM은 기본으로 추론(chain-of-thought)이 켜져 있어 응답 앞에 붙는데, 설정만으로 끈다:
 
 ```json
 {
   "provider": "openai",
-  "model": "nemotron-3-super-120b-a12b",
+  "model": "nvidia/nemotron-3-super-120b-a12b",
   "baseUrl": "https://integrate.api.nvidia.com/v1",
   "extraBody": { "chat_template_kwargs": { "enable_thinking": false } }
 }
@@ -45,11 +45,11 @@ Action은 두 모드로 동작, `main.ts`에서 `mode` 입력값으로 분기:
 
 ## 사용 저장소에 설치
 
-1. 워크플로 파일(`.github/workflows/worktrace.yml`)은 저장소 루트가 아니라 **서브패스**로 액션 참조:
+1. 워크플로 파일(`.github/workflows/worktrace.yml`):
    ```yaml
-   uses: Ethualo/pr-worktrace/packages/action@v1
+   uses: Ethualo/pr-worktrace@v1
    ```
-   (서브패스 없이 `Ethualo/pr-worktrace@v1`로 쓰면 "can't find action.yml" 에러 — 모노레포라 액션이 `packages/action` 아래 있음.)
+   (저장소 루트 `action.yml`이 `packages/action/dist/index.js`를 그대로 가리키므로, 모노레포지만 서브패스 없이 바로 참조 가능.)
 2. 저장소 루트에 `worktrace.config.json` — `provider`, `model`, `baseUrl`, `extraBody`.
 3. `WORKTRACE_LLM_API_KEY` 저장소 시크릿 (저장소별 개별 설정. 여러 저장소 공유하려면 GitHub 조직 단위 시크릿 사용.)
 

@@ -1,4 +1,4 @@
-import type { ProviderConfig } from "@worktrace/providers";
+import type { ProviderConfig } from "@pr-worktrace/providers";
 export interface LoadConfigParams {
     configJson: string;
     apiKey: string;

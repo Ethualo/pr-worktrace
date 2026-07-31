@@ -1,5 +1,5 @@
-import type { ReviewIssue } from "@worktrace/core";
-import type { PostedComment, ReactionSummary } from "@worktrace/github";
+import type { ReviewIssue } from "@pr-worktrace/core";
+import type { PostedComment, ReactionSummary } from "@pr-worktrace/github";
 import { classifyDecision } from "./classifyDecision.js";
 import type { WorkTraceEntry } from "./types.js";
 

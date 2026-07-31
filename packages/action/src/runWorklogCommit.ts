@@ -1,7 +1,7 @@
-import type { ReviewIssue } from "@worktrace/core";
-import type { GithubClient, PostedComment, ReactionSummary } from "@worktrace/github";
-import { commitWorklogFile } from "@worktrace/github";
-import { buildWorktraceEntries, formatWorklogMarkdown, worklogFilePath } from "@worktrace/worklog";
+import type { ReviewIssue } from "@pr-worktrace/core";
+import type { GithubClient, PostedComment, ReactionSummary } from "@pr-worktrace/github";
+import { commitWorklogFile } from "@pr-worktrace/github";
+import { buildWorktraceEntries, formatWorklogMarkdown, worklogFilePath } from "@pr-worktrace/worklog";
 
 export interface RunWorklogCommitParams {
   owner: string;

@@ -1,7 +1,7 @@
 import { describe, it, expect } from "vitest";
 import { buildWorktraceEntries } from "./buildWorktraceEntries.js";
-import type { ReviewIssue } from "@worktrace/core";
-import type { PostedComment, ReactionSummary } from "@worktrace/github";
+import type { ReviewIssue } from "@pr-worktrace/core";
+import type { PostedComment, ReactionSummary } from "@pr-worktrace/github";
 
 const issues: ReviewIssue[] = [
   {

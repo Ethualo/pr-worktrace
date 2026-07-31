@@ -1,5 +1,5 @@
-import type { ReviewIssue, Severity } from "@worktrace/core";
-import type { PostedComment, ReviewCommentThread } from "@worktrace/github";
+import type { ReviewIssue, Severity } from "@pr-worktrace/core";
+import type { PostedComment, ReviewCommentThread } from "@pr-worktrace/github";
 
 const ISSUE_COMMENT_PATTERN =
   /^<!-- worktrace-issue:(.+?) -->\n\*\*\[(low|medium|high|critical)\]\*\* (.+)\n\n([\s\S]*)$/;

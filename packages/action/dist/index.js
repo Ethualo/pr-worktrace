@@ -32138,7 +32138,7 @@ async function runReviewMode() {
             core.setFailed(`GitHub API auth/permission error: ${error instanceof Error ? error.message : String(error)}`);
             return;
         }
-        core.warning(`worktrace-bot review step failed, continuing without blocking the PR: ${error instanceof Error ? error.message : String(error)}`);
+        core.warning(`pr-worktrace review step failed, continuing without blocking the PR: ${error instanceof Error ? error.message : String(error)}`);
     }
 }
 async function runPollMode() {
@@ -32162,7 +32162,7 @@ async function runPollMode() {
             core.setFailed(`GitHub API auth/permission error: ${error instanceof Error ? error.message : String(error)}`);
             return;
         }
-        core.warning(`worktrace-bot poll step failed, continuing without blocking the PR: ${error instanceof Error ? error.message : String(error)}`);
+        core.warning(`pr-worktrace poll step failed, continuing without blocking the PR: ${error instanceof Error ? error.message : String(error)}`);
     }
 }
 async function run() {

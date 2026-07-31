@@ -1,4 +1,4 @@
-# worktrace-bot
+# pr-worktrace
 
 [한국어](README.ko.md)
 
@@ -6,7 +6,7 @@ AI PR-review bot + work-trace logger, packaged as a GitHub Action. No database �
 
 ## Why this exists
 
-Most PR-review bots need a backend to remember what they've already said. worktrace-bot doesn't: it encodes its own state into the artifacts it posts (a hidden HTML-comment marker per review comment, a hidden marker on its own "leave a reason" reply) and re-derives everything on the next run by parsing those markers back out. Zero infra to operate, zero infra to go stale.
+Most PR-review bots need a backend to remember what they've already said. pr-worktrace doesn't: it encodes its own state into the artifacts it posts (a hidden HTML-comment marker per review comment, a hidden marker on its own "leave a reason" reply) and re-derives everything on the next run by parsing those markers back out. Zero infra to operate, zero infra to go stale.
 
 ## Architecture
 
@@ -30,12 +30,12 @@ Two Action modes, dispatched on the `mode` input in `main.ts`:
 - `claude` — Anthropic Messages API
 - `openai` — generic OpenAI-compatible provider (`baseUrl` + `extraBody` passthrough), so any OpenAI-shaped endpoint works without provider-specific code
 
-The E2E validation below ran on **NVIDIA NIM** instead, purely to work around Anthropic/OpenAI credit constraints during testing — NIM isn't a target provider, it just happens to expose an OpenAI-compatible endpoint, so it runs through the `openai` provider unmodified with no NIM-specific branch anywhere in the codebase. NIM's reasoning/chain-of-thought is on by default and gets prepended to responses; it's turned off purely through config:
+The E2E validation below ran on **NVIDIA NIM** instead. It exposes an OpenAI-shaped API, so it runs through the `openai` provider unmodified — no NIM-specific branch anywhere in the codebase. NIM's reasoning/chain-of-thought is on by default and gets prepended to responses; it's turned off purely through config:
 
 ```json
 {
   "provider": "openai",
-  "model": "nemotron-3-super-120b-a12b",
+  "model": "nvidia/nemotron-3-super-120b-a12b",
   "baseUrl": "https://integrate.api.nvidia.com/v1",
   "extraBody": { "chat_template_kwargs": { "enable_thinking": false } }
 }
@@ -45,11 +45,11 @@ The E2E validation below ran on **NVIDIA NIM** instead, purely to work around An
 
 ## Installing in a consumer repo
 
-1. Workflow (`.github/workflows/worktrace.yml`) references the action by **subpath**, not the bare repo:
+1. Workflow (`.github/workflows/worktrace.yml`):
    ```yaml
-   uses: Ethualo/pr-worktrace/packages/action@v1
+   uses: Ethualo/pr-worktrace@v1
    ```
-   (A bare `Ethualo/pr-worktrace@v1` fails with "can't find action.yml" — this is a monorepo, the action lives under `packages/action`.)
+   (A root-level `action.yml` re-exports `packages/action/dist/index.js`, so the bare repo ref works despite this being a monorepo.)
 2. `worktrace.config.json` in the consumer repo root — `provider`, `model`, `baseUrl`, `extraBody`.
 3. `WORKTRACE_LLM_API_KEY` repo secret (per-repo; use GitHub Org-level secrets to share across repos).
 

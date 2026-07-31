@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { postReviewComments } from "./postReviewComments.js";
 import type { GithubClient } from "./types.js";
-import type { ReviewIssue } from "@worktrace/core";
+import type { ReviewIssue } from "@pr-worktrace/core";
 
 const issues: ReviewIssue[] = [
   {

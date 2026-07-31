@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
-import type { GithubClient } from "@worktrace/github";
+import type { GithubClient } from "@pr-worktrace/github";
 import { runPoll } from "./runPoll.js";
 
 const TAGGED_COMMENT = "<!-- worktrace-issue:issue-1 -->\n**[high]** s\n\nsg";

@@ -1,5 +1,5 @@
 {
-  "name": "@worktrace/github",
+  "name": "@pr-worktrace/github",
   "version": "0.0.0",
   "type": "module",
   "main": "dist/index.js",
@@ -9,7 +9,7 @@
     "build": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@worktrace/core": "workspace:*",
+    "@pr-worktrace/core": "workspace:*",
     "@octokit/rest": "^21.0.0"
   },
   "devDependencies": {

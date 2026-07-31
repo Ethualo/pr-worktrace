@@ -1,5 +1,5 @@
 {
-  "name": "@worktrace/worklog",
+  "name": "@pr-worktrace/worklog",
   "version": "0.0.0",
   "type": "module",
   "main": "dist/index.js",
@@ -9,8 +9,8 @@
     "build": "tsc -p tsconfig.json"
   },
   "dependencies": {
-    "@worktrace/core": "workspace:*",
-    "@worktrace/github": "workspace:*"
+    "@pr-worktrace/core": "workspace:*",
+    "@pr-worktrace/github": "workspace:*"
   },
   "devDependencies": {
     "typescript": "^5.6.0",

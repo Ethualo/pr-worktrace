@@ -1,6 +1,6 @@
-import type { GithubClient } from "@worktrace/github";
-import { getFileSha, listReviewComments, pollReactions } from "@worktrace/github";
-import { worklogFilePath } from "@worktrace/worklog";
+import type { GithubClient } from "@pr-worktrace/github";
+import { getFileSha, listReviewComments, pollReactions } from "@pr-worktrace/github";
+import { worklogFilePath } from "@pr-worktrace/worklog";
 import { extractReasons } from "./extractReasons.js";
 import { reconstructReviewState } from "./reconstructReviewState.js";
 import { requestReasonForRejections } from "./requestReasonForRejections.js";

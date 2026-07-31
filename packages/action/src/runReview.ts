@@ -1,6 +1,6 @@
-import type { LLMProvider, ReviewIssue } from "@worktrace/core";
-import type { GithubClient, PostedComment } from "@worktrace/github";
-import { fetchPrDiff, postReviewComments } from "@worktrace/github";
+import type { LLMProvider, ReviewIssue } from "@pr-worktrace/core";
+import type { GithubClient, PostedComment } from "@pr-worktrace/github";
+import { fetchPrDiff, postReviewComments } from "@pr-worktrace/github";
 
 export interface RunReviewParams {
   owner: string;
