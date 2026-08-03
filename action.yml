@@ -38,5 +38,5 @@ branding:
   icon: "eye"
   color: "blue"
 runs:
-  using: "node20"
+  using: "node24"
   main: "packages/action/dist/index.js"
