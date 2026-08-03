@@ -6,3 +6,5 @@ dist/
 .worklog/.cache
 .worktrees/
 .claude/
+_workspace/
+coverage/

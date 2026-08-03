@@ -6,7 +6,8 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "test": "vitest run",
-    "build": "tsc -p tsconfig.json"
+    "build": "tsc -p tsconfig.json",
+    "test:coverage": "vitest run --coverage --config ../../vitest.config.ts"
   },
   "devDependencies": {
     "typescript": "^5.6.0",
