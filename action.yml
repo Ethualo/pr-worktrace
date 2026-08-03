@@ -34,6 +34,9 @@ inputs:
     description: "open | closed — whether the worklog file should be committed (mode: poll only)"
     required: false
     default: "open"
+branding:
+  icon: "eye"
+  color: "blue"
 runs:
   using: "node20"
   main: "packages/action/dist/index.js"
