@@ -4,7 +4,7 @@ AI PR-review bot + work-trace logger, packaged as a GitHub Action. Portfolio pie
 
 ## Structure
 
-pnpm workspace monorepo, TypeScript strict/NodeNext, Vitest, Node 20.
+pnpm workspace monorepo, TypeScript strict/NodeNext, Vitest. Two separate Node versions matter here: dev/CI needs Node >=22.13 (pnpm@11.18.0 requirement — see gotchas), while the shipped Action itself declares `runs.using: node24` in `action.yml` (the GitHub Actions runner's own bundled runtime, unrelated to the repo's dev Node version).
 
 - `packages/core` — shared types (`ReviewIssue`, `Severity`, ...)
 - `packages/github` — GitHub API primitives, DI-testable (`GithubClient` passed as first arg to every function)
@@ -19,8 +19,9 @@ Every package has its own `package.json` (test/build scripts) and `tsconfig.json
 ## Commands
 
 ```bash
-pnpm -r build   # build all packages (must run before pnpm -r test after a workspace-package source change — dist/ is gitignored and resolved via node_modules)
-pnpm -r test    # test all packages
+pnpm -r build          # build all packages (must run before pnpm -r test after a workspace-package source change — dist/ is gitignored and resolved via node_modules)
+pnpm -r test           # test all packages
+pnpm -r test:coverage  # same, with v8 coverage report (config: vitest.config.ts at repo root)
 cd packages/<name> && pnpm test -- <pattern>   # single package/file
 ```
 
@@ -38,16 +39,20 @@ cd packages/<name> && pnpm test -- <pattern>   # single package/file
 - Strict TDD: RED → GREEN → commit, per function/file.
 - Design spec SSOT: `docs/superpowers/specs/2026-07-30-worktrace-bot-design.md` (Korean).
 - Implementation plans: `docs/superpowers/plans/*.md`, written and executed via superpowers skills (`writing-plans`, `subagent-driven-development`).
-- **Releases:** consumers pin `Ethualo/pr-worktrace@v1` (floating major tag). To ship a new version: publish a GitHub Release with a full semver tag (`v1.2.3`) — `.github/workflows/update-major-tag.yml` then force-moves `v1` to that commit automatically. Never move `v1` by hand; that workflow is the only path.
+- **Releases:** consumers pin `Ethualo/pr-worktrace@v1` (floating major tag). To ship a new version: publish a GitHub Release with a full semver tag (`v1.2.3`) — `.github/workflows/update-major-tag.yml` then force-moves `v1` to that commit automatically. Never move `v1` by hand; that workflow is the only path. No release-branch-per-version scheme — not needed until a second major version needs parallel patch support.
+- **Branch protection (master):** requires the `build-and-test` CI check to pass before merge; admins (repo owner) are exempted so direct pushes still work, no required PR reviews. Set 2026-08-03 via `gh api .../branches/master/protection`.
 
 ## Known gotchas
 
 - After merging/pulling changes to a workspace package's source, run `pnpm -r build` before `pnpm -r test` — packages resolve each other via `node_modules → dist/` (gitignored), not source.
 - On Windows, `git worktree remove --force` can fail with "Directory not empty" due to file locks; fall back to `rm -rf <path>` (best-effort) + `git worktree prune`.
 - `fetchPrDiff.ts` pages through `listFiles` (3000-file ceiling) instead of requesting the diff media type on `GET /pulls/:number` — that endpoint 406s past ~300 files or ~20000 changed lines, and `runReviewMode` swallows the resulting error via `core.warning` (by design, so review failures never block the PR), so a too-large PR silently gets no review at all. Found live via feed-flow PR #21/#22 validation.
+- `pnpm@11.18.0` (pinned in `packageManager`) requires Node >=22.13 — under Node 20 it crashes on `require("node:sqlite")`. CI's `setup-node` was pinned to `node-version: 20`, so `build-and-test` silently failed on every push from 2026-07-31 until master branch protection started enforcing that check on 2026-08-03 and surfaced it. Fixed by bumping CI to Node 22. Keep CI's Node version >= whatever `packageManager` in root `package.json` requires.
 
 ## Outstanding (see docs/superpowers/plans/2026-07-30-poll-mode.md "out of scope")
 
 - Deployed into feed-flow (`.github/workflows/worktrace.yml` from `examples/worktrace.yml`, `worktrace.config.json`, `WORKTRACE_LLM_API_KEY` secret) — done.
 - OpenAI provider native extras (beyond generic `extraBody` passthrough) — implemented provider is intentionally generic OpenAI-compatible (works with NIM etc. via `baseUrl`), no OpenAI-specific feature support yet.
 - Long-running production validation of the stateless architecture (large PRs, complex comment threads) as a persistent fixture repo, not just one-off E2E passes.
+- Test coverage reporting wired (`vitest.config.ts`, `pnpm -r test:coverage`, in CI) — done 2026-08-03; no coverage threshold enforced yet, and no external badge (would need a Codecov-style account).
+- GitHub Marketplace listing — `action.yml` has `branding` metadata (done 2026-08-03, unblocks the release-time checkbox), but not published. Hold until production validation above has more than one deployment, since Marketplace exposure means public issues/support burden.
